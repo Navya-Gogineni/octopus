@@ -1,0 +1,29 @@
+C:\>C:\Users\mahesh.babu.c\Desktop\InvokeTests.bat
+C:\>"C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\Tools\"\..\IDE\MSTest.exe /testcontainer:"C:\Octopus\OctopusInvestments\OctopusInvestments\bin\Debug\OctopusInvestments.dll" /test:UnitTest1
+Microsoft (R) Test Execution Command Line Tool Version 11.0.50727.1
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+Loading C:\Octopus\OctopusInvestments\OctopusInvestments\bin\Debug\OctopusInvestments.dll...
+Starting execution...
+
+Results               Top Level Tests
+-------               ---------------
+Passed                OctopusInvestments.UnitTest1.loadWebPage
+Passed                OctopusInvestments.UnitTest1.searchForPerson
+Passed                OctopusInvestments.UnitTest1.searchForUnknownPerson
+Passed                OctopusInvestments.UnitTest1.Searchwithteam
+Passed                OctopusInvestments.UnitTest1.SortAToZTest
+Passed                OctopusInvestments.UnitTest1.SortZToATest
+Passed                OctopusInvestments.UnitTest1.validatePerson
+7/7 test(s) Passed, 0 Failed
+
+Summary
+-------
+Test Run Failed.
+  Failed   0
+  Passed   7
+  ----------
+  Total    7
+Results file:  C:\TestResults\Mahesh.Babu.c_YELHH-2017-L-06 2020-01-19 20_25_57.trx
+Test Settings: Default Test Settings
+c:\>

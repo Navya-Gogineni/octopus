@@ -1,0 +1,1 @@
+"%VS110COMNTOOLS%"\..\IDE\MSTest.exe /testcontainer:"C:\Octopus\OctopusInvestments\OctopusInvestments\bin\Debug\OctopusInvestments.dll" /test:UnitTest1

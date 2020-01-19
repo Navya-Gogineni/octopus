@@ -1,0 +1,330 @@
+using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using System.Threading;
+using System.Collections;
+using System.Collections.Generic;
+
+namespace OctopusInvestments
+{
+    [TestClass]
+    public class UnitTest1
+    {
+        #region TestMethods
+        [TestCategory("Octopus")]
+        [Description(@"Verifies that octopus page is loading")]
+        [TestMethod]
+        public void loadWebPage()
+        {
+            //Launch the URL
+            IWebDriver driver = new ChromeDriver();
+            try
+            {
+                //Maximize the window
+                driver.Manage().Window.Maximize();
+                //URL for launching the application
+                driver.Url = "https://octopusinvestments.com/investor/about-us/our-people/";
+                //To close the pop-up 
+                IWebElement element = driver.FindElement(By.XPath("//*[@class='pop-up-info_bottom-link']//*[@class='arrow-link js-close-modal']"));
+                element.SendKeys(Keys.Escape);
+                //Validate header
+                var logo = driver.FindElement(By.XPath("//div[@class='header_logo']")).Displayed;
+
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            finally
+            {
+                //Close the application
+                driver.Close();
+                //Close the browser
+                driver.Quit();
+            }
+        }
+
+        [TestCategory("Octopus")]
+        [Description(@"Verifies a person from the octopus page")]
+        [TestMethod]
+        public void searchForPerson()
+        {
+            //Launch the URL
+            IWebDriver driver = new ChromeDriver();
+            try
+            {
+                //Maximize the window
+                driver.Manage().Window.Maximize();
+                //URL for launching the application
+                driver.Url = "https://octopusinvestments.com/investor/about-us/our-people/";
+                Thread.Sleep(3000);
+                //To close the pop-up 
+                IWebElement element = driver.FindElement(By.XPath("//*[@class='pop-up-info_bottom-link']//*[@class='arrow-link js-close-modal']"));
+                element.SendKeys(Keys.Escape);
+                //Click on the scroll Text link
+                driver.FindElement(By.XPath("//div[@class='hero-scroll__txt']")).Click();
+                Thread.Sleep(3000);
+                //Enter the value in "Tell us who you're looking for"
+                driver.FindElement(By.XPath("//*[@class='input-search']//*[@class='input']")).SendKeys("Adam Birch");
+                Thread.Sleep(3000);
+                //Click on search button
+                driver.FindElement(By.XPath("//div[@class='form_group']//img")).Click();
+
+                Thread.Sleep(3000);
+                //Click on the displayed image to whom we serached for
+                driver.FindElement(By.XPath("//img[@class='attachment-team-thumb size-team-thumb wp-post-image']")).Click();
+                Thread.Sleep(2000);
+                //To close the pop-up
+                IWebElement popup = driver.FindElement(By.XPath("//*[@class='pop-up-info_bottom-link']//*[@class='arrow-link js-close-modal']"));
+                popup.SendKeys(Keys.Escape);
+                //Verify the correct person is displayed.
+                var elements = driver.FindElement(By.XPath("//p[@class='people_info-prof']"));
+                Assert.IsTrue(elements.Text.Equals("Client Services Specialist"));
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            finally
+            {
+                //Close the application
+                driver.Close();
+                //Close the browser
+                driver.Quit();
+            }
+        }
+
+        [TestCategory("Octopus")]
+        [Description(@"Verifies that some x person in the webpage")]
+        [TestMethod]
+        public void searchForUnknownPerson()
+        {
+            //Launch the URL
+            IWebDriver driver = new ChromeDriver();
+            try
+            {
+                //Maximize the window
+                driver.Manage().Window.Maximize();
+                //URL for launching the application
+                driver.Url = "https://octopusinvestments.com/investor/about-us/our-people/";
+                Thread.Sleep(2000);
+                //To close the pop-up 
+                IWebElement element = driver.FindElement(By.XPath("//*[@class='pop-up-info_bottom-link']//*[@class='arrow-link js-close-modal']"));
+                element.SendKeys(Keys.Escape);
+                //Click on the scroll Text link
+                driver.FindElement(By.XPath("//div[@class='hero-scroll__txt']")).Click();
+                Thread.Sleep(3000);
+                //Enter the value in "Tell us who you're looking for" with a unknown person name 
+                driver.FindElement(By.XPath("//*[@class='input-search']//*[@class='input']")).SendKeys("xyz");
+                Thread.Sleep(3000);
+                //Click on search button
+                driver.FindElement(By.XPath("//div[@class='form_group']//img")).Click();
+                Thread.Sleep(3000);
+                //Verify the search result is displayed "NO results found".
+                var elements = driver.FindElement(By.XPath("//p[contains(text(),'No results found')]"));
+                //Validate that there is no results found
+                Assert.IsTrue(elements.Text.Equals("No results found"));
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            finally
+            {
+                //Close the application
+                driver.Close();
+                //Close the browser
+                driver.Quit();
+            }
+        }
+
+        [TestCategory("Octopus")]
+        [Description(@"Search for a person and  validate that correct person is dispalyed")]
+        [TestMethod]
+        public void validatePerson()
+        {
+            //Load the Chrome page
+            IWebDriver driver = new ChromeDriver();
+            try
+            {
+                //Maximize the windows
+                driver.Manage().Window.Maximize();
+                //Load URL
+                driver.Url = "https://octopusinvestments.com/investor/about-us/our-people/";
+                //click on the pop up window
+                IWebElement element = driver.FindElement(By.XPath("//*[@class='pop-up-info_bottom-link']//*[@class='arrow-link js-close-modal']"));
+                element.SendKeys(Keys.Escape);
+                //click on Scroll button
+                driver.FindElement(By.XPath("//div[@class='hero-scroll__txt']")).Click();
+                Thread.Sleep(3000);
+                //Send the person name
+                driver.FindElement(By.XPath("//*[@class='input-search']//*[@class='input']")).SendKeys("Adam Birch");
+                //Click on the search button
+                driver.FindElement(By.XPath("//div[@class='form_group']//img")).Click();
+                Thread.Sleep(3000);
+                //Validate that Searched person is displayed 
+                var elements = driver.FindElement(By.XPath("//h2[text()='Adam Birch']"));
+                Assert.IsTrue(elements.Text.Equals("Adam Birch"));
+            }
+
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            finally
+            {
+                //Close the application
+                driver.Close();
+                //Close the browser
+                driver.Quit();
+            }
+        }
+
+        [TestCategory("Octopus")]
+        [Description(@"Search for a team from the list and validate that only that team is coming in that page")]
+        [TestMethod]
+        public void Searchwithteam()
+        {
+            //Load the Chrome page
+            IWebDriver driver = new ChromeDriver();
+            try
+            {
+                //Maximize the windows
+                driver.Manage().Window.Maximize();
+                //Load URL
+                driver.Url = "https://octopusinvestments.com/investor/about-us/our-people/";
+                //click on the pop up window
+
+                Thread.Sleep(3000);
+                IWebElement element = driver.FindElement(By.XPath("//*[@class='pop-up-info_bottom-link']//*[@class='arrow-link js-close-modal']"));
+                element.SendKeys(Keys.Escape);
+                //click on Scroll button
+                driver.FindElement(By.XPath("//div[@class='hero-scroll__txt']")).Click();
+                Thread.Sleep(3000);
+                //Click on Business Development team from the Team List
+                driver.FindElement(By.XPath("//span[contains(text(),'Business development team')]")).Click();
+                //Refresh the window
+                driver.Navigate().Refresh();
+                Thread.Sleep(3000);
+                //click on the pop up window
+                IWebElement elements = driver.FindElement(By.XPath("//*[@class='pop-up-info_bottom-link']//*[@class='arrow-link js-close-modal']"));
+                elements.SendKeys(Keys.Escape);
+                //scroll down for the bottom
+                IJavaScriptExecutor js = ((IJavaScriptExecutor)driver);
+                js.ExecuteScript("window.scrollTo(0, document.body.scrollHeight)");
+
+                //scroll down for the bottom
+                js.ExecuteScript("window.scrollTo(0, document.body.scrollHeight)");
+
+                Thread.Sleep(3000);
+                //Getting the list of particular team
+                IList<IWebElement> teamItemTitles = driver.FindElements(By.XPath("//p[@class='team-item_text']"));
+
+                //Validate that correct team members are dispalyed otherwise throgh error
+                int i;
+                for (i = 0; i < 10; i++)
+                {
+                    if (teamItemTitles[i].Text != "Business development team")
+                    {
+                        Assert.AreEqual(teamItemTitles, "Some other team members are added in the list");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            finally
+            {
+                //Close the application
+                driver.Close();
+                //Close the browser
+                driver.Quit();
+            }
+        }
+
+        [TestCategory("Octopus")]
+        [Description(@"Sort the names from A-Z and validate that the persons are sorted accordingly")]
+        [TestMethod]
+        public void SortAToZTest()
+        {
+            Sorting("A-Z");
+        }
+
+        [TestCategory("Octopus")]
+        [Description(@"Sort the names from Z-A and validate that the persons are sorted accordingly")]
+        [TestMethod]
+        public void SortZToATest()
+        {
+            Sorting("Z-A");
+        }
+
+        #endregion TestMethods
+
+        #region TestHelpers
+
+        public void Sorting(string sortOrderType)
+        {
+            //Open the driver
+            IWebDriver octopusWebDriver = new ChromeDriver();
+            try
+            {
+                //Maximize the window
+                octopusWebDriver.Manage().Window.Maximize();
+                //Load URL
+                octopusWebDriver.Url = "https://octopusinvestments.com/investor/about-us/our-people/";
+                //Close the pop upo window
+                IWebElement element = octopusWebDriver.FindElement(By.XPath("//*[@class='pop-up-info_bottom-link']//*[@class='arrow-link js-close-modal']"));
+                element.SendKeys(Keys.Escape);
+                //close the cookies window
+                octopusWebDriver.FindElement(By.XPath("//div/a[@class='btn-pink js-cookie-btn']")).Click();
+                //Click on Scroll window
+                octopusWebDriver.FindElement(By.XPath("//div[@class='hero-scroll__txt']")).Click();
+                //After scrolldown actionlink
+                Thread.Sleep(3000);
+                octopusWebDriver.FindElement(By.XPath("//div[@class='jq-selectbox__trigger-arrow']")).Click();
+                Thread.Sleep(2000);
+                //Select Sort By Z-A dropdown option
+                octopusWebDriver.FindElement(By.XPath("//li[text()='Sort " + sortOrderType + "']")).Click();
+                //Screen Scroll Vertically
+                IJavaScriptExecutor js = ((IJavaScriptExecutor)octopusWebDriver);
+                js.ExecuteScript("window.scrollTo(0, document.body.scrollHeight)");
+
+                Thread.Sleep(3000);
+                //List of people details
+                IList<IWebElement> teamItemTitles = octopusWebDriver.FindElements(By.XPath("//h2[@class='team-item_title']"));
+                IList<IWebElement> copiedTeamTitles = new List<IWebElement>();
+                ArrayList arrTeam = new ArrayList();
+
+                //Before Sort in ascending Z-A order
+                for (int m = 0; m < teamItemTitles.Count; m++)
+                {
+                    if (teamItemTitles[m].Displayed == true)
+                    {
+                        arrTeam.Add(teamItemTitles[m].Text);
+                        copiedTeamTitles.Insert(m, teamItemTitles[m]);
+                    }
+                }
+                //Validating Sorting Order
+                for (int k = 0; k < copiedTeamTitles.Count; k++)
+                {
+                    Assert.AreEqual(copiedTeamTitles[k].Text, arrTeam[k], "The given names are not in alphabetical order (" + sortOrderType + ")");
+                }
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            finally
+            {
+                //close the application
+                octopusWebDriver.Close();
+                //Close the browser
+                octopusWebDriver.Quit();
+            }
+        }
+
+        #endregion TestHelpers
+    }
+}
